@@ -1,0 +1,3 @@
+/home/atif/Desktop/AutoMotive Prep/Implementation/Calculations/cmake-build-debug/CMakeFiles/Calculations.dir
+/home/atif/Desktop/AutoMotive Prep/Implementation/Calculations/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/atif/Desktop/AutoMotive Prep/Implementation/Calculations/cmake-build-debug/CMakeFiles/rebuild_cache.dir
