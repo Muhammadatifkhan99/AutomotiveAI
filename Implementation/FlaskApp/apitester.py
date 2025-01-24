@@ -11,7 +11,7 @@ def generate_random_gps_data():
     """
     Generate a random GPS data point with a timestamp, latitude, and longitude.
     """
-    timestamp = datetime.datetime.now(datetime.UTC).isoformat() + "Z"
+    timestamp = datetime.datetime.now(timezone.utc).isoformat() + "Z"
     latitude = round(random.uniform(-90, 90), 4)
     longitude = round(random.uniform(-180, 180), 4)
     return {

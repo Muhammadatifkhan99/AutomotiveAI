@@ -1,19 +1,16 @@
-import json
+import requests
 import random
+from datetime import datetime, timezone
 import time
-from datetime import datetime
-from flask import Flask, request, jsonify
 
-# Initialize Flask application
-app = Flask(__name__)
+# Base URL for the Flask API running on localhost
+BASE_URL = "http://127.0.0.1:5000"
 
-# Define file paths for storing incoming and processed data
-INCOMING_DATA_FILE = "incoming_data.json"
-PROCESSED_DATA_FILE = "processed_coordinates.json"
-
-# Function to generate random GPS data
 def generate_random_gps_data():
-    timestamp = datetime.utcnow().isoformat() + "Z"
+    """
+    Generate a random GPS data point with a timestamp, latitude, and longitude.
+    """
+    timestamp = datetime.now(timezone.utc).isoformat() + "Z"  # Corrected datetime formatting
     latitude = round(random.uniform(-90, 90), 4)
     longitude = round(random.uniform(-180, 180), 4)
     return {
@@ -22,94 +19,52 @@ def generate_random_gps_data():
         "longitude": longitude
     }
 
-# Function to save data to a file (append mode)
-def save_to_file(file_name, data):
+def send_post_request():
+    """
+    Send a POST request with random GPS data to the '/upload' endpoint.
+    """
+    url = f"{BASE_URL}/upload"
+    gps_data = generate_random_gps_data()
+
     try:
-        with open(file_name, "a") as file:
-            json.dump(data, file)
-            file.write("\n")
-    except Exception as e:
-        print(f"Error saving data to {file_name}: {e}")
+        response = requests.post(url, json=gps_data, timeout=5)
+        if response.status_code == 200:
+            print("POST Request Success: ", response.json())
+        else:
+            print("POST Request Failed. Status Code:", response.status_code)
+            print("Response Text:", response.text)
+    except requests.exceptions.RequestException as e:
+        print(f"Error during POST request: {e}")
 
-# Function to process incoming GPS data (calculate average latitude and longitude)
-def process_data():
+def send_get_request():
+    """
+    Send a GET request to the '/retrieve' endpoint to fetch processed data.
+    """
+    url = f"{BASE_URL}/retrieve"
+
     try:
-        with open(INCOMING_DATA_FILE, "r") as file:
-            data_points = [json.loads(line) for line in file.readlines()]
-        
-        # If no data is available, return an empty summary
-        if not data_points:
-            return {"average_latitude": 0, "average_longitude": 0}
+        response = requests.get(url, timeout=5)
+        if response.status_code == 200:
+            print("GET Request Success: ", response.json())
+        else:
+            print("GET Request Failed. Status Code:", response.status_code)
+            print("Response Text:", response.text)
+    except requests.exceptions.RequestException as e:
+        print(f"Error during GET request: {e}")
 
-        # Calculate the average latitude and longitude
-        total_latitude = sum([point['latitude'] for point in data_points])
-        total_longitude = sum([point['longitude'] for point in data_points])
-        avg_latitude = total_latitude / len(data_points)
-        avg_longitude = total_longitude / len(data_points)
+if __name__ == "__main__":
+    print("Starting API Tester...")
 
-        # Prepare processed data
-        processed_data = {
-            "average_latitude": round(avg_latitude, 4),
-            "average_longitude": round(avg_longitude, 4)
-        }
-
-        # Save the processed data to a file
-        save_to_file(PROCESSED_DATA_FILE, processed_data)
-        return processed_data
-    except Exception as e:
-        print(f"Error processing data: {e}")
-        return {}
-
-# POST endpoint to receive and store incoming GPS data
-@app.route('/upload', methods=['POST'])
-def upload_data():
     try:
-        # Get the incoming data from the request
-        incoming_data = request.get_json()
+        while True:
+            print("\nSending POST request...")
+            send_post_request()
 
-        # Save the incoming data to the incoming data file
-        save_to_file(INCOMING_DATA_FILE, incoming_data)
+            time.sleep(1)
 
-        # Return a success message
-        return jsonify({"message": "Data received and stored successfully!"}), 200
-    except Exception as e:
-        print(f"Error in uploading data: {e}")
-        return jsonify({"error": "Failed to store data"}), 400
+            print("\nSending GET request...")
+            send_get_request()
 
-# GET endpoint to retrieve processed GPS data
-@app.route('/retrieve', methods=['GET'])
-def retrieve_processed_data():
-    try:
-        # Process the incoming data and calculate summary
-        processed_data = process_data()
-
-        # Return the processed data
-        return jsonify(processed_data), 200
-    except Exception as e:
-        print(f"Error in retrieving processed data: {e}")
-        return jsonify({"error": "Failed to retrieve processed data"}), 400
-
-# Function to simulate real-time data generation and send POST requests
-def simulate_data_generation():
-    while True:
-        # Generate random GPS data
-        gps_data = generate_random_gps_data()
-
-        # Simulate sending POST request with generated GPS data to the backend
-        with app.test_client() as client:
-            client.post('/upload', json=gps_data)
-
-        # Wait for 2 seconds before generating the next data point
-        time.sleep(2)
-
-# Start server
-if __name__ == '__main__':
-    # Start the app
-    app.run(debug=True, use_reloader=False, host='0.0.0.0', port=5000)
-
-    # data generation
-    simulate_data_generation()
-
-#to send a post request use:::    curl -X POST http://<ngrok_url>/upload -H "Content-Type: application/json" -d '{"timestamp":"2025-01-23T12:00:00Z","latitude":52.5200,"longitude":13.4050}'
-#to send a get request use:::     curl http://127.0.0.1:5000/retrieve
-
+            time.sleep(2)
+    except KeyboardInterrupt:
+        print("\nAPI Tester stopped by user.")

@@ -4,12 +4,12 @@ app = Flask(__name__)
 
 @app.route('/upload', methods=['POST'])
 def upload_data():
-    # Handle POST request
+    # POST request
     pass
 
 @app.route('/retrieve', methods=['GET'])
 def retrieve_data():
-    # Handle GET request
+    # GET request
     pass
 
 if __name__ == '__main__':
