@@ -1,0 +1,4 @@
+code of post request::: curl -X POST http://127.0.0.1:5000/upload -H "Content-Type: application/json" -d '{"timestamp":"2025-01-23T12:00:00Z","latitude":52.5200,"longitude":13.4050}'
+
+
+code for get request::: curl http://127.0.0.1:5000/retrieve
