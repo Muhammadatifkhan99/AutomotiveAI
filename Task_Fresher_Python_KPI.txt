@@ -1,0 +1,74 @@
+Tasks for the Potential Candidates - with less or no Experience
+===============================================================
+
+Task 1: KPI Development for Lane Detection Modules
+Objective: Define, simulate, and implement Key Performance Indicators (KPIs) for a lane detection module using Python and C++.
+
+Description:
+1. Step 1: Research and Define KPIs  
+   - Use ChatGPT to identify at least three common KPIs for lane detection (e.g., lane marking accuracy, lane boundary deviation, or detection latency).
+   - Summarize the KPIs and explain their relevance in lane detection.
+
+2. Step 2: Simulate Lane Detection Outputs  
+   - Write a Python script to simulate lane detection outputs as arrays or JSON data. For example:
+     ```json
+     {
+       "frame": 1,
+       "lane_1": {"start": [100, 300], "end": [200, 500]},
+       "lane_2": {"start": [300, 300], "end": [400, 500]}
+     }
+     ```
+   - Simulate at least 10 frames with varying lane positions.
+
+3. Step 3: Implement KPI Calculations  
+   - Using Python or C++ (their choice), implement functions to calculate the defined KPIs.  
+   Example:
+     - Lane marking accuracy: Compare simulated lane positions to ground truth.
+     - Lane boundary deviation: Calculate the average deviation of detected lanes from expected positions.
+
+4. Step 4: Document Results  
+   - Provide a short report on how the KPIs were defined, calculated, and the results from their simulation.
+
+---
+
+Task 2: Backend Development with Python
+Objective: Design and implement a simple backend system to store and process data using Python, with the ability to handle high-frequency data.
+
+Description:
+1. Step 1: Design a Backend System  
+   - Use ChatGPT to figure out how to design a basic backend system.
+   - Define an API that includes endpoints for:
+     - Uploading data (e.g., sensor readings or GPS coordinates).
+     - Retrieving processed data.
+
+2. Step 2: Simulate Data Generation  
+   - Write a Python script to simulate the generation of random data in real time.  
+     Example: Random GPS data generation.
+     ```json
+     {
+       "timestamp": "2025-01-23T12:00:00Z",
+       "latitude": 52.5200,
+       "longitude": 13.4050
+     }
+     ```
+
+3. Step 3: Implement the Backend  
+   - Use a framework like Flask or FastAPI to build the backend.
+   - Add basic data processing functionality, such as:
+     - Storing data in memory or a simple file.
+     - Calculating a summary (e.g., the average latitude/longitude over time).
+
+4. Step 4: Test the System  
+   - Create a Python script to send requests to the API (e.g., POST and GET) and validate its functionality.
+
+5. Step 5: Document Results  
+   - Provide an explanation of how the backend was implemented, including code snippets and any challenges faced.
+
+
+Instructions for Candidates
+- Resources: Use ChatGPT to research concepts, find sample code, and troubleshoot issues.  
+- Tools: Use any IDE or tools of your choice to complete the tasks.  
+- Deliverables:
+  - Task code in Python (and optionally C++ for Task 1).
+  - A short document (or markdown file) summarizing their approach, code functionality, and any challenges faced.
+
